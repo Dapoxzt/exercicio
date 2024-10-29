@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Formandos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #4CAF50;
+            padding: 10px;
+            color: white;
+            text-align: center;
+        }
+        section {
+            padding: 20px;
+            margin: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+        }
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Lista de Formandos</h1>
+        <nav>
+            <a href="formulario.html">Adicionar Formando</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="adicionar.html">Lista de Formandos</a>
+        </nav>
+    </header>
+    <section>
+        <table id="formandosTable">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Curso</th>
+                    <th>Data de Inscrição</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+    <script>
+        function carregarFormandos() {
+            let formandos = JSON.parse(localStorage.getItem('formandos')) || [];
+            const tabela = document.getElementById('formandosTable').getElementsByTagName('tbody')[0];
+            tabela.innerHTML = ''; // Limpa a tabela
+            formandos.forEach((formando, index) => {
+                let row = tabela.insertRow();
+                row.innerHTML = `
+                    <td>${formando.nome}</td>
+                    <td>${formando.curso}</td>
+                    <td>${formando.data}</td>
+                    <td><button onclick="removerFormando(${index})">Remover</button></td>
+                `;
+            });
+        }
+        
+        function removerFormando(index) {
+            let formandos = JSON.parse(localStorage.getItem('formandos')) || [];
+            if (confirm('Tem certeza que deseja remover o formando?')) {
+                formandos.splice(index, 1);
+                localStorage.setItem('formandos', JSON.stringify(formandos));
+                carregarForm

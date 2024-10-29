@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #4CAF50;
+            padding: 10px;
+            color: white;
+            text-align: center;
+        }
+        section {
+            padding: 20px;
+            margin: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Dashboard</h1>
+        <nav>
+            <a href="formulario.html">Adicionar Formando</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="adicionar.html">Lista de Formandos</a>
+        </nav>
+    
+    </header>
+    <section>
+        <p>Total de Formandos: <span id="totalFormandos">0</span></p>
+        <p>Programação: <span id="programacao">0</span></p>
+        <p>Atendimento ao Cliente: <span id="atendimentoCliente">0</span></p>
+    </section>
+    <script>
+        function atualizarDashboard() {
+            let formandos = JSON.parse(localStorage.getItem('formandos')) || [];
+            let total = formandos.length;
+            let cursos = { 'Programação': 0, 'Atendimento ao cliente': 0 };
+            formandos.forEach(formando => {
+                cursos[formando.curso] += 1;
+            });
+            document.getElementById('totalFormandos').innerText = total;
+            document.getElementById('programacao').innerText = cursos['Programação'];
+            document.getElementById('atendimentoCliente').innerText = cursos['Atendimento ao cliente'];
+        }
+        document.addEventListener('DOMContentLoaded', atualizarDashboard);
+    </script>
+</body>
+</html>

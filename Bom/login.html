@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestão de Inventário de Livros</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login Section -->
+    <section id="login-section">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label for="username">Usuário:</label>
+            <input type="text" id="username" required>
+            <label for="password">Senha:</label>
+            <input type="password" id="password" required>
+            <button type="submit">Entrar</button>
+        </form>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard-section" style="display:none;">
+        <h2>Dashboard</h2>
+        <p>Total de Livros: <span id="total-books">0</span></p>
+        <p>Livros Disponíveis: <span id="available-books">0</span></p>
+        <p>Livros Emprestados: <span id="borrowed-books">0</span></p>
+        <p>Categorias: <span id="categories-count">0</span></p>
+        <button id="manage-books">Gerenciar Livros</button>
+        <button id="add-book">Adicionar Livro</button>
+        <button id="logout">Sair</button>
+    </section>
+
+    <!-- Gerenciar Livros Section -->
+    <section id="manage-books-section" style="display:none;">
+        <h2>Gerenciar Livros</h2>
+        <table id="books-table">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Autor</th>
+                    <th>Categoria</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button id="dashboard-back">Voltar ao Dashboard</button>
+    </section>
+
+    <!-- Adicionar Livro Section -->
+    <section id="add-book-section" style="display:none;">
+        <h2>Adicionar Livro</h2>
+        <form id="add-book-form">
+            <label for="book-title">Título:</label>
+            <input type="text" id="book-title" required>
+            <label for="book-author">Autor:</label>
+            <input type="text" id="book-author" required>
+            <label for="book-category">Categoria:</label>
+            <input type="text" id="book-category" required>
+            <label for="book-status">Status:</label>
+            <select id="book-status">
+                <option value="disponível">Disponível</option>
+                <option value="emprestado">Emprestado</option>
+            </select>
+            <button type="submit">Adicionar</button>
+        </form>
+        <button id="back-to-dashboard">Voltar ao Dashboard</button>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+</html>

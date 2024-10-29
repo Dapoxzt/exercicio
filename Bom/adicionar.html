@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Formando</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #4CAF50;
+            padding: 10px;
+            color: white;
+            text-align: center;
+        }
+        section {
+            padding: 20px;
+            margin: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Adicionar Formando</h1>
+        <nav>
+            <a href="formulario.html">Adicionar Formando</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="adicionar.html">Lista de Formandos</a>
+        </nav>
+    </header>
+    <section>
+        <form id="formandoForm">
+            <input type="text" id="nome" placeholder="Nome" required />
+            <input type="text" id="morada" placeholder="Morada" required />
+            <input type="text" id="telefone" placeholder="Telefone" required />
+            <select id="curso" required>
+                <option value="" disabled selected>Escolha o curso</option>
+                <option value="Programação">Programação</option>
+                <option value="Atendimento ao cliente">Atendimento ao cliente</option>
+            </select>
+            <input type="date" id="data" required />
+            <button type="submit">Adicionar Formando</button>
+        </form>
+    </section>
+    <script>
+        let formandos = JSON.parse(localStorage.getItem('formandos')) || [];
+        document.getElementById('formandoForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formando = {
+                nome: document.getElementById('nome').value,
+                morada: document.getElementById('morada').value,
+                telefone: document.getElementById('telefone').value,
+                curso: document.getElementById('curso').value,
+                data: document.getElementById('data').value
+            };
+            formandos.push(formando);
+            localStorage.setItem('formandos', JSON.stringify(formandos));
+            document.getElementById('formandoForm').reset();
+            alert('Formando adicionado com sucesso!');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Gestão de Formação</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #4CAF50;
+      padding: 10px;
+      color: white;
+      text-align: center;
+    }
+
+    section {
+      padding: 20px;
+      margin: 20px;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+  
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 12px;
+    }
+  
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      cursor: pointer;
+    }
+
+  
+
+    #pagination button {
+      padding: 5px 10px;
+      margin: 2px;
+    }
+
+    #detalhesFormando {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Sistema de Gestão de Formação</h1>
+  </header>
+
+  <!-- Formulário de Adicionar Formando -->
+  <section id="adicionarFormando">
+    <h2>Adicionar Formando</h2>
+    <form id="formandoForm">
+      <input type="text" id="nome" placeholder="Nome" required />
+      <input type="text" id="morada" placeholder="Morada" required />
+      <input type="text" id="telefone" placeholder="Telefone" required />
+      <select id="curso" required>
+        <option value="" disabled selected>Escolha o curso</option>
+        <option value="Programaçao">Programaçao</option>
+        <option value="Atendimento ao cliente">Atendimento ao cliente</option>
+      </select>
+      <input type="date" id="data" required />
+      <button type="submit">Adicionar Formando</button>
+    </form>
+  </section>
+
+  <!-- Dashboard -->
+  <section id="dashboard">
+    <h2>Dashboard</h2>
+    <p>Total de Formandos: <span id="totalFormandos">0</span></p>
+    <p>Programaçao: <span id="Programaçao">0</span></p>
+    <p>Atendimento ao cliente: <span id="Atendimento ao cliente">0</span></p>
+  </section>
+
+  <!-- Lista de Formandos com Paginação -->
+  <section id="listaFormandos">
+    <h2>Lista de Formandos</h2>
+    <table id="formandosTable">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Curso</th>
+          <th>Data de Inscrição</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Formandos serão inseridos dinamicamente aqui -->
+      </tbody>
+    </table>
+    <div id="pagination">
+      <!-- Botões de navegação de páginas serão gerados aqui -->
+    </div>
+  </section>
+
+  <!-- Página de Detalhes -->
+  <section id="detalhesFormando">
+    <h2>Detalhes do Formando</h2>
+    <p>Nome: <span id="detNome"></span></p>
+    <p>Curso: <span id="detCurso"></span></p>
+    <p>Data de Inscrição: <span id="detData"></span></p>
+    <button onclick="voltar()">Voltar</button>
+  </section>
+
+  <script>
+    let formandos = JSON.parse(localStorage.getItem('formandos')) || [];
+    let formandosPorPagina = 5;
+    let paginaAtual = 1;
+
+    // Carregar dados e inicializar tudo
+    document.addEventListener('DOMContentLoaded', function () {
+      atualizarDashboard();
+      carregarFormandos();
+    });
+
+    // Adicionar formando
+    document.getElementById('formandoForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const formando = {
+        nome: document.getElementById('nome').value,
+        morada: document.getElementById('morada').value,
+        telefone: document.getElementById('telefone').value,
+        curso: document.getElementById('curso').value,
+        data: document.getElementById('data').value
+      };
+
+      formandos.push(formando);
+      localStorage.setItem('formandos', JSON.stringify(formandos));
+      alert('Formando adicionado com sucesso!');
+      carregarFormandos();
+      atualizarDashboard();
+      document.getElementById('formandoForm').reset();
+    });
+
+    // Remover formando
+    function removerFormando(index) {
+      if (confirm('Tem certeza que deseja remover o formando?')) {
+        formandos.splice(index, 1);
+        localStorage.setItem('formandos', JSON.stringify(formandos));
+        carregarFormandos();
+        atualizarDashboard();
+        alert('Formando removido com sucesso!');
+      }
+    }
+
+    // Atualizar dashboard
+    function atualizarDashboard() {
+      let total = formandos.length;
+      let cursos = { 'Programaçao': 0, 'Atendimento ao cliente': 0 };
+
+      formandos.forEach(formando => {
+        cursos[formando.curso] += 1;
+      });
+
+      document.getElementById('totalFormandos').innerText = total;
+      document.getElementById('Programaçao').innerText = cursos['Programaçao'];
+      document.getElementById('Atendimento ao cliente').innerText = cursos['Atendimento ao cliente'];
+    }
+
+    // Carregar formandos com paginação
+    function carregarFormandos() {
+      const tabela = document.getElementById('formandosTable').getElementsByTagName('tbody')[0];
+      tabela.innerHTML = ''; // Limpa a tabela
+
+      const inicio = (paginaAtual - 1) * formandosPorPagina;
+      const fim = inicio + formandosPorPagina;
+
+      formandos.slice(inicio, fim).forEach((formando, index) => {
+        let row = tabela.insertRow();
+        row.innerHTML = `
+          <td>${formando.nome}</td>
+          <td>${formando.curso}</td>
+          <td>${formando.data}</td>
+          <td><button onclick="verDetalhes(${inicio + index})">Ver Detalhes</button> <button onclick="removerFormando(${inicio + index})">Remover</button></td>
+        `;
+      });
+
+      gerarPaginacao();
+    }
+
+    // Gerar paginação
+    function gerarPaginacao() {
+      const totalPaginas = Math.ceil(formandos.length / formandosPorPagina);
+      const paginacao = document.getElementById('pagination');
+      paginacao.innerHTML = '';
+
+      for (let i = 1; i <= totalPaginas; i++) {
+        let botao = document.createElement('button');
+        botao.innerText = i;
+        botao.onclick = function () {
+          paginaAtual = i;
+          carregarFormandos();
+        };
+        paginacao.appendChild(botao);
+      }
+    }
+
+    // Ver detalhes
+    function verDetalhes(index) {
+      const formando = formandos[index];
+      document.getElementById('detNome').innerText = formando.nome;
+      document.getElementById('detCurso').innerText = formando.curso;
+      document.getElementById('detData').innerText = formando.data;
+
+      document.getElementById('listaFormandos').style.display = 'none';
+      document.getElementById('detalhesFormando').style.display = 'block';
+    }
+
+    // Voltar para a lista de formandos
+    function voltar() {
+      document.getElementById('listaFormandos').style.display = 'block';
+      document.getElementById('detalhesFormando').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
+
+
+
+
