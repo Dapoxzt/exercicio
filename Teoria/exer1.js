@@ -212,21 +212,24 @@ biblioteca.filtrarPorGenero("Ficção").forEach(livro => {
 const departamentoTI = new Departamento("Tecnologia da Informação");
 const dev1 = new Desenvolvedor("Alice", 4000, "Sistema de Gestão");
 const designer1 = new Designer("Bob", 3500, "Projeto X");
+const designer2 = new Designer("Maria", 4000, "Programação");
+
 departamentoTI.adicionarFuncionario(dev1);
 departamentoTI.adicionarFuncionario(designer1);
+departamentoTI.adicionarFuncionario(designer2);
 console.log("Funcionários do Departamento de TI:");
 console.log(departamentoTI.listarFuncionarios());
 
 // Sistema de Reservas de Hotel
 const hotel = new Hotel("Hotel Luxo", "São Paulo");
-const quarto1 = new Quarto(101, "Simples", 200);
-const quarto2 = new Quarto(102, "Luxo", 500);
+const quarto1 = new Quarto(50, "Simples", 600);
+const quarto2 = new Quarto(29, "Luxo", 800);
 hotel.adicionarQuarto(quarto1);
 hotel.adicionarQuarto(quarto2);
-quarto1.reservar(); // Reserva o quarto 101
-console.log(`Quarto 101: ${quarto1.verDisponibilidade()}`); // Indisponível
-quarto1.cancelarReserva(); // Cancela a reserva do quarto 101
-console.log(`Quarto 101: ${quarto1.verDisponibilidade()}`); // Disponível
+quarto1.reservar(); // Reserva o quarto 50
+console.log(`Quarto 1 : ${quarto1.verDisponibilidade()}`); // Indisponível
+quarto1.cancelarReserva(); // Cancela a reserva do quarto 50
+console.log(`Quarto 2: ${quarto1.verDisponibilidade()}`); // Disponível
 
 // Adicionando itens ao inventário
 const item1 = new ItemInventario("Caneta", 100, 2.50);
